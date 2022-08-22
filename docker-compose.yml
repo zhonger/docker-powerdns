@@ -1,0 +1,13 @@
+version: "3"
+
+services:
+  ubuntu:
+    image: zhonger/ubuntu:latest
+    container_name: dev
+    environment:
+     - GITHUB_NAME=zhonger
+    stdin_open: true
+    tty: true
+    volumes:
+     - /etc/localtime:/etc/localtime
+    restart: always
