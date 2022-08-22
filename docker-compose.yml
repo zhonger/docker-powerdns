@@ -1,13 +1,23 @@
 version: "3"
 
 services:
-  ubuntu:
-    image: zhonger/ubuntu:latest
-    container_name: dev
+  pdns:
+    image: zhonger/pdns:latest
+    # image: zhonger/pdns:alpine
     environment:
-     - GITHUB_NAME=zhonger
+     - PDNS_launch=gsqlite3
+     - PDNS_gsqlite3_database=/var/lib/powerdns/pdns.sqlite3
+     - PDNS_webserver_address=0.0.0.0
+     - PDNS_webserver_allow_from=127.0.0.1,10.0.0.0/8,172.0.0.0/8,192.168.0.0/16
+     - PDNS_api=yes
+     - PDNS_api_key={Random Long Secret}
     stdin_open: true
     tty: true
+    ports:
+     - "853:53/tcp"
+     - "853:53/udp"
+     - "8081:8081/tcp"
     volumes:
-     - /etc/localtime:/etc/localtime
+     - /etc/localtime:/etc/localtime:ro
+     - ./pdns-data:/var/lib/powerdns
     restart: always
